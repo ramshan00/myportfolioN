@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.parallax {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+} 
+h2{
+  background-color: rgba(27, 51, 82, 0.359);
+  box-shadow: gray 2px 4px 4px;
+}
