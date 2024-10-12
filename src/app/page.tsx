@@ -94,7 +94,7 @@ export default function Home() {
             width={600}
             height={400}
             className="max-w-full h-auto"
-            src="/BGDP.PNG"
+            src="/BGDP.png"
             alt="Abstract"
           />
         </div>
