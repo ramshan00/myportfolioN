@@ -10,14 +10,45 @@ export default function Home() {
     setIsMenuOpen((prev) => !prev); // Toggle the menu open/close state
   };
 
+  // State for contact form
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+
+  // Handle input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Here, you can call your backend API to send the message
+    console.log(formData); // For now, log the form data to console
+    // Optionally clear the form after submission
+    setFormData({
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
+    });
+  };
+
   return (
     <main
-      className="parallax bg-fixed bg-center bg-cover min-h-screen "
+      className="parallax bg-fixed bg-center bg-cover min-h-screen"
       style={{ backgroundImage: "url('./ani.gif')" }}
     >
       {/* Navbar */}
-      <nav className="flex justify-between items-center py-4 px-4 md:px-10 bg-gradient-to-r from-gray-800 to-navy-900 shadow-lg">
-        <div className="text-xl font-bold text-white font-serif">RamshN.</div>
+      <nav className="flex justify-between items-center py-4 px-4 md:px-10 bg-gradient-to-r from-gray-900 to-navy-900  shadow-lg">
+        <div className="text-3xl font-bold text-blue-100 font-serif">RamshN.</div>
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
@@ -30,47 +61,24 @@ export default function Home() {
             )}
           </button>
         </div>
+
+        {/* Navigation Links */}
         <ul
-          className={`md:flex gap-6 transition-transform duration-300 ease-in-out ${
-            isMenuOpen ? "flex" : "hidden"
-          }`}
+          className={`absolute top-16 left-0 w-full text-xl font-serif bg-slate-800 md:bg-transparent md:static md:flex justify-end gap-6 transition-transform duration-300 ease-in-out transform ${
+            isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 z-10`}
         >
-          <li>
-            <a
-              href="#about"
-              className="hover:text-gray-400 transition-colors duration-300 text-white font-bold"
-            >
-              About
-            </a>
-          </li>
-          <li>
-            <a
-              href="#skills"
-              className="hover:text-gray-400 transition-colors duration-300 text-white font-bold"
-            >
-              Skills
-            </a>
-          </li>
-          <li>
-            <a
-              href="#projects"
-              className="hover:text-gray-400 transition-colors duration-300 text-white font-bold"
-            >
-              Projects
-            </a>
-          </li>
-          <li>
-            <a
-              href="#contact"
-              className="hover:text-gray-400 transition-colors duration-300 text-white font-bold"
-            >
-              Contact
-            </a>
-          </li>
+          {["About", "Skills", "Projects", "Contact"].map((link) => (
+            <li key={link}>
+              <a
+                href={`#${link.toLowerCase()}`}
+                className="block md:inline-block py-4 md:py-0 text-center hover:text-gray-400 transition-colors duration-300 text-white font-bold"
+              >
+                {link}
+              </a>
+            </li>
+          ))}
         </ul>
-        <button className="bg-white text-black font-bold py-2 px-4 md:px-6 rounded-lg shadow-md transition-transform transform hover:scale-105 hover:bg-gray-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-          Hire Me
-        </button>
       </nav>
 
       {/* Hero Section */}
@@ -78,14 +86,20 @@ export default function Home() {
         {/* Left side */}
         <div className="flex-1 text-center md:text-left">
           <h1 className="font-bold text-3xl md:text-4xl text-gray-300 font-serif">
-            Hi, I’m 
+            Hi, I’m Ramsha Noshad
           </h1>
           <p className="text-base md:text-lg text-gray-300 mt-4">
-           Ramsha Noshad, a full-stack web developer with 3 years of experience. I specialize in HTML, CSS, JavaScript, Next.js, React.js, TypeScript, and Tailwind CSS. I’m dedicated to creating user-friendly, dynamic websites that exceed client expectations. Lets work together to bring your vision to life!
+            A full-stack web developer with 3 years of experience. I specialize in HTML, CSS, JavaScript, Next.js, React.js, TypeScript, and Tailwind CSS.
           </p>
-          <button  className="bg-white text-black font-bold py-3 px-4 md:px-6 mt-6 rounded-lg shadow-md transition-transform transform hover:scale-105 hover:bg-gray-100 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-            View My Work
-          </button>
+          <br />
+          <br />
+          <a 
+            href="/Ramsha Noshad Resume.pdf" 
+            download 
+            className="bg-white text-black font-bold py-3 px-4 md:px-6 mt-6 rounded-lg shadow-md transition-transform transform hover:scale-105 hover:bg-gray-100 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+          >
+            Download Resume 
+          </a>
         </div>
 
         {/* Right Side */}
@@ -95,153 +109,67 @@ export default function Home() {
             height={400}
             className="max-w-full h-auto"
             src="/BGDP.png"
-            alt="Abstract"
+            alt="Abstract background"
           />
         </div>
       </section>
-      <br />
+
       {/* Skills Section */}
       <section id="skills" className="py-16 px-4 md:px-10 bg-transparent">
         <h2 className="text-center text-2xl md:text-3xl font-bold mb-10 text-white font-serif">
           Skills
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-8 text-center">
-          <div className="flex flex-col items-center">
-            <Image
-              src="/hmtll.png"
-              alt="HTML"
-              width={60}
-              height={60}
-            />
-            <p className="text-white mt-4 font-bold">HTML</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Image
-              src="/css4.webp"
-              alt="CSS"
-              width={60}
-              height={60}
-            />
-            <p className="text-white mt-4 font-bold">CSS</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Image
-              src="/js.png"
-              alt="JavaScript"
-              width={60}
-              height={60}
-            />
-            <p className="text-white mt-4 font-bold">JavaScript</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Image
-              src="/tsss.webp"
-              alt="TypeScript"
-              width={60}
-              height={60}
-            />
-            <p className="text-white mt-4 font-bold">TypeScript</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Image
-              src="/react.png"
-              alt="React"
-              width={60}
-              height={60}
-            />
-            <p className="text-white mt-4 font-bold">React</p>
-          </div>
-          <div className="flex flex-col items-center">
-            <Image
-              src="/next1.png"
-              alt="next.js"
-              width={60}
-              height={60}
-            />
-            <p className="text-white mt-4 font-bold">Next.js</p>
-          </div>
+          {[
+            { src: "/hmtll.png", alt: "HTML" },
+            { src: "/css4.webp", alt: "CSS" },
+            { src: "/js.png", alt: "JavaScript" },
+            { src: "/tsss.webp", alt: "TypeScript" },
+            { src: "/react.png", alt: "React" },
+            { src: "/next1.png", alt: "Next.js" },
+          ].map((skill) => (
+            <div className="flex flex-col items-center" key={skill.alt}>
+              <Image src={skill.src} alt={skill.alt} width={60} height={60} />
+              <p className="text-white mt-4 font-bold">{skill.alt}</p>
+            </div>
+          ))}
         </div>
       </section>
-      <br />
-      {/* Card Section */}
+
+      {/* Projects Section */}
       <section id="projects" className="py-16 px-4 md:px-10 bg-transparent">
         <h2 className="text-center text-2xl md:text-3xl font-bold mb-10 text-white font-serif">
           Projects
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {/* Card 1 */}
-          <div className="bg-gradient-to-br from-gray-700 to-navy-900 text-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
-            <Image
-              src="/p1.png"
-              width={400}
-              height={300}
-              className="rounded-lg mb-4"
-              alt="Project 1"
-            />
-            <h3 className="text-lg md:text-xl font-bold mb-4 text-white font-serif">
-              Project 1
-            </h3>
-            <p className="text-gray-300 mb-4">
-              Css tailwind card slider
-            </p>
-            <button className="bg-white text-black font-bold py-2 px-4 rounded-lg hover:bg-gray-300">
-              View Project
-            </button>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-gradient-to-br from-gray-700 to-navy-900 text-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
-            <Image
-              src="/p2.png"
-              width={400}
-              height={300}
-              className="rounded-lg mb-4"
-              alt="Project 2"
-            />
-            <h3 className="text-lg md:text-xl font-bold mb-4 text-white font-serif">
-              Project 2
-            </h3>
-            <p className="text-gray-300 mb-4">
-            A sleek portfolio website designed for a client.
-
-            </p>
-            <button className="bg-white text-black font-bold py-2 px-4 rounded-lg hover:bg-gray-300">
-              View Project
-            </button>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-gradient-to-br from-gray-700 to-navy-900 text-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300">
-            <Image
-              src="/p3.png"
-              width={400}
-              height={300}
-              className="rounded-lg mb-4"
-              alt="Project 3"
-            />
-            <h3 className="text-lg md:text-xl font-bold mb-4 text-white font-serif">
-              Project 3
-            </h3>
-            <p className="text-gray-300 mb-4">
-            Stopwatch in Next.js involves building a responsive and efficient client-side application that tracks time, using Reacts state management and hooks.
-            </p>
-            <button className="bg-white text-black font-bold py-2 px-4 rounded-lg hover:bg-gray-300">
-              View Project
-            </button>
-          </div>
+          {[
+            { src: "/p1.png", title: "Project 1", desc: "CSS Tailwind card slider" },
+            { src: "/p2.png", title: "Project 2", desc: "Sleek portfolio website" },
+            { src: "/p3.png", title: "Project 3", desc: "Next.js Stopwatch app" },
+          ].map((project) => (
+            <div
+              key={project.title}
+              className="bg-gradient-to-br from-gray-700 to-navy-900 text-white rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300"
+            >
+              <Image src={project.src} width={400} height={300} className="rounded-lg mb-4" alt={project.title} />
+              <h3 className="text-lg md:text-xl font-bold mb-4 text-white font-serif">{project.title}</h3>
+              <p className="text-gray-300 mb-4">{project.desc}</p>
+              <button className="bg-white text-black font-bold py-2 px-4 rounded-lg hover:bg-gray-300">
+                View Project
+              </button>
+            </div>
+          ))}
         </div>
       </section>
+
       <br />
       <br />
-
-  
-
-      {/* Contact Form */}
-      <section id="contact" className="py-16 px-4 md:px-10 bg-transparent">
+        {/* Contact Form */}
+      <section id= "contact" className="py-16 px-4 md:px-10 bg-transparent">
         <h2 className="text-center text-2xl md:text-3xl font-bold mb-10 text-white font-serif">
           Contact Me
         </h2>
-        <form className="max-w-2xl mx-auto bg-gradient-to-br from-gray-800 to-navy-900 p-8 rounded-lg shadow-lg">
+        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-gradient-to-br from-gray-800 to-navy-900 p-8 rounded-lg shadow-lg">
           <div className="mb-6">
             <label htmlFor="name" className="block text-white font-bold mb-2">
               Name
@@ -250,6 +178,8 @@ export default function Home() {
               type="text"
               id="name"
               name="name"
+              value={formData.name}
+              onChange={handleChange}
               className="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
               placeholder="Your Name"
               required
@@ -263,6 +193,8 @@ export default function Home() {
               type="email"
               id="email"
               name="email"
+              value={formData.email}
+              onChange={handleChange}
               className="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
               placeholder="Your Email"
               required
@@ -276,6 +208,8 @@ export default function Home() {
               type="text"
               id="subject"
               name="subject"
+              value={formData.subject}
+              onChange={handleChange}
               className="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
               placeholder="Subject"
               required
@@ -289,6 +223,8 @@ export default function Home() {
               id="message"
               name="message"
               rows={4}
+              value={formData.message}
+              onChange={handleChange}
               className="w-full p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
               placeholder="Your Message"
               required
@@ -302,7 +238,6 @@ export default function Home() {
           </button>
         </form>
       </section>
-
   
 
           {/* Footer Section */}
@@ -375,3 +310,4 @@ export default function Home() {
     </main>
   );
 }
+
